@@ -1,0 +1,1 @@
+GEN_CSRCS += _LOGO_alpha_64x64.c _HDMI_alpha_64x64.c _USB_alpha_64x64.c _net_alpha_64x64.c _up_alpha_20x20.c _tailscale_alpha_24x24.c _zerotier_alpha_24x24.c
