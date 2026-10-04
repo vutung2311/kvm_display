@@ -1,7 +1,12 @@
+#define _GNU_SOURCE
 #include <time.h>
 #include <sys/time.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <linux/input.h>
 
 #include "screen.h"
 #include "lvgl/lvgl.h"
@@ -24,6 +29,28 @@ static lv_disp_draw_buf_t disp_buf;
 static lv_disp_drv_t disp_drv;
 static lv_indev_drv_t indev_drv;
 
+static const char *find_touchscreen_device(void) {
+    static char dev_path[64];
+    for (int i = 0; i < 10; i++) {
+        snprintf(dev_path, sizeof(dev_path), "/dev/input/event%d", i);
+        int fd = open(dev_path, O_RDONLY | O_NONBLOCK);
+        if (fd < 0) continue;
+
+        char name[128] = {0};
+        if (ioctl(fd, EVIOCGNAME(sizeof(name)), name) >= 0) {
+            printf("[kvm_display] Checking input %s: '%s'\n", dev_path, name);
+            if (strcasestr(name, "cst816") || strcasestr(name, "touch")) {
+                printf("[kvm_display] Selected touchscreen device: %s ('%s')\n", dev_path, name);
+                close(fd);
+                return dev_path;
+            }
+        }
+        close(fd);
+    }
+    printf("[kvm_display] Fallback touchscreen device: /dev/input/event0\n");
+    return "/dev/input/event0";
+}
+
 void init_lvgl() {
     lv_init();
     fbdev_init();
@@ -40,11 +67,14 @@ void init_lvgl() {
     lv_disp_drv_register(&disp_drv);
 
     evdev_init();
-    evdev_set_file("/dev/input/event0");
+    const char *touch_dev = find_touchscreen_device();
+    evdev_set_file(touch_dev);
 
     lv_indev_drv_init(&indev_drv);
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     indev_drv.read_cb = evdev_read;
+    indev_drv.gesture_limit = 30;
+    indev_drv.gesture_min_velocity = 1;
     lv_indev_drv_register(&indev_drv);
  
     setup_ui(&guider_ui);

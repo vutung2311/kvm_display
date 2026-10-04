@@ -22,13 +22,12 @@ void setup_scr_Monitor(lv_ui *ui)
     ui->Monitor = lv_obj_create(NULL);
     lv_obj_set_size(ui->Monitor, 240, 240);
     lv_obj_set_scrollbar_mode(ui->Monitor, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_add_flag(ui->Monitor, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
 
     //Write style for Monitor, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_bg_opa(ui->Monitor, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui->Monitor, lv_color_hex(0x000000), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_bg_grad_dir(ui->Monitor, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_clear_flag(ui->Monitor, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_clear_flag(ui->Monitor, LV_OBJ_FLAG_SCROLLABLE);
 
     //Write codes Monitor_CPU_Used_Cont
     ui->Monitor_CPU_Used_Cont = lv_obj_create(ui->Monitor);
@@ -237,6 +236,7 @@ void setup_scr_Monitor(lv_ui *ui)
     lv_obj_set_pos(ui->Monitor_CPU_Temp_Cont, 10, 120);
     lv_obj_set_size(ui->Monitor_CPU_Temp_Cont, 220, 40);
     lv_obj_set_scrollbar_mode(ui->Monitor_CPU_Temp_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Monitor_CPU_Temp_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Monitor_CPU_Temp_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Monitor_CPU_Temp_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);

@@ -135,11 +135,13 @@ int get_cpu_usage()
 
     file = fopen("/proc/stat", "r");
     if (file == NULL) {
-        perror("open failed/proc/stat");
         return -1;
     }
-    fscanf(file, "cpu %llu %llu %llu %llu %llu %llu %llu", 
-           &user, &nice, &system, &idle, &iowait, &irq, &softirq);
+    if (fscanf(file, "cpu %llu %llu %llu %llu %llu %llu %llu", 
+               &user, &nice, &system, &idle, &iowait, &irq, &softirq) != 7) {
+        fclose(file);
+        return -1;
+    }
     fclose(file);
 
     total_time = user + nice + system + idle + iowait + irq + softirq;
@@ -148,15 +150,7 @@ int get_cpu_usage()
     if (prev_total == 0 || prev_idle == 0) {
         prev_total = total_time;
         prev_idle = idle_time;
-        sleep(1);
-
-        file = fopen("/proc/stat", "r");
-        fscanf(file, "cpu %llu %llu %llu %llu %llu %llu %llu", 
-               &user, &nice, &system, &idle, &iowait, &irq, &softirq);
-        fclose(file);
-
-        total_time = user + nice + system + idle + iowait + irq + softirq;
-        idle_time = idle;
+        return 0;
     }
 
     total_diff = total_time - prev_total;
@@ -178,12 +172,10 @@ int get_cpu_temperature()
 
     file = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
     if (file == NULL) {
-        perror("Failed to open temperature file");
         return -1;
     }
 
     if (fscanf(file, "%d", &raw_temp) != 1) {
-        perror("Failed to read temperature value");
         fclose(file);
         return -1;
     }
@@ -196,23 +188,27 @@ int get_cpu_temperature()
 
 int get_ram_usage() 
 {
-    FILE* file;
+    FILE* file = fopen("/proc/meminfo", "r");
+    if (file == NULL) {
+        return 0;
+    }
+
     char line[128];
-    int usage = 0;
-
-    FILE* pipe = popen("free | awk '/Mem:/ {printf(\"%d\\n\", $3/$2*100)}'", "r");
-    if (pipe == NULL) {
-        perror("popen failed");
-        return -1;
+    unsigned long total = 0, available = 0, free = 0, buffers = 0, cached = 0;
+    while (fgets(line, sizeof(line), file)) {
+        if (sscanf(line, "MemTotal: %lu kB", &total) == 1) continue;
+        if (sscanf(line, "MemAvailable: %lu kB", &available) == 1) continue;
+        if (sscanf(line, "MemFree: %lu kB", &free) == 1) continue;
+        if (sscanf(line, "Buffers: %lu kB", &buffers) == 1) continue;
+        if (sscanf(line, "Cached: %lu kB", &cached) == 1) continue;
     }
+    fclose(file);
 
-    if (fgets(line, sizeof(line), pipe) != NULL) {
-        sscanf(line, "%d", &usage);
-    }
+    if (total == 0) return 0;
+    if (available == 0) available = free + buffers + cached;
+    if (available > total) available = total;
 
-    pclose(pipe);
-
-    return usage;
+    return (int)(((total - available) * 100) / total);
 }
 
 void* run_monitor_loop(void* arg) {

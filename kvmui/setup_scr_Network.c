@@ -34,6 +34,7 @@ void setup_scr_Network(lv_ui *ui)
     lv_obj_set_pos(ui->Network_Address_Cont, 10, 10);
     lv_obj_set_size(ui->Network_Address_Cont, 220, 132);
     lv_obj_set_scrollbar_mode(ui->Network_Address_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Network_Address_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Network_Address_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Network_Address_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -157,6 +158,7 @@ void setup_scr_Network(lv_ui *ui)
     lv_obj_set_pos(ui->Network_TailScale_Cont, 10, 190);
     lv_obj_set_size(ui->Network_TailScale_Cont, 220, 40);
     lv_obj_set_scrollbar_mode(ui->Network_TailScale_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Network_TailScale_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Network_TailScale_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Network_TailScale_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -212,6 +214,7 @@ void setup_scr_Network(lv_ui *ui)
     lv_obj_set_pos(ui->Network_ZeroTier_Cont, 10, 146);
     lv_obj_set_size(ui->Network_ZeroTier_Cont, 220, 40);
     lv_obj_set_scrollbar_mode(ui->Network_ZeroTier_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Network_ZeroTier_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Network_ZeroTier_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Network_ZeroTier_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -267,6 +270,7 @@ void setup_scr_Network(lv_ui *ui)
     lv_obj_set_pos(ui->Network_No_Network_Cont, 10, 10);
     lv_obj_set_size(ui->Network_No_Network_Cont, 220, 220);
     lv_obj_set_scrollbar_mode(ui->Network_No_Network_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Network_No_Network_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Network_No_Network_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Network_No_Network_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);

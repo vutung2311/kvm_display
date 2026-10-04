@@ -94,6 +94,7 @@ void setup_scr_Main(lv_ui *ui)
     lv_obj_set_pos(ui->Main_HDMI_Cont, 10, 133);
     lv_obj_set_size(ui->Main_HDMI_Cont, 108, 96);
     lv_obj_set_scrollbar_mode(ui->Main_HDMI_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Main_HDMI_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Main_HDMI_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Main_HDMI_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -149,6 +150,7 @@ void setup_scr_Main(lv_ui *ui)
     lv_obj_set_pos(ui->Main_USB_Cont, 122, 133);
     lv_obj_set_size(ui->Main_USB_Cont, 108, 96);
     lv_obj_set_scrollbar_mode(ui->Main_USB_Cont, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_clear_flag(ui->Main_USB_Cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_SCROLLABLE);
 
     //Write style for Main_USB_Cont, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Main_USB_Cont, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
