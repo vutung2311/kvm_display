@@ -97,8 +97,10 @@ void init_lvgl() {
 
 void *run_lvgl_loop(void *arg) {
     while(1) {
-        lv_timer_handler();
-        usleep(10000);
+        uint32_t sleep_ms = lv_timer_handler();
+        if (sleep_ms > 30) sleep_ms = 30;
+        if (sleep_ms < 5) sleep_ms = 5;
+        usleep(sleep_ms * 1000);
     }
 }
 
